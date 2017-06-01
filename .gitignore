@@ -7,3 +7,4 @@ test-output/
 .gradle/3.3/taskArtifacts/
 
 testng.xml
+.project
