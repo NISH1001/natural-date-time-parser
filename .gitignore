@@ -5,6 +5,9 @@ bin/
 .settings/
 test-output/
 .gradle/3.3/taskArtifacts/
+gradle/
+gradlew
+gradlew.bat
 
 testng.xml
 .project
