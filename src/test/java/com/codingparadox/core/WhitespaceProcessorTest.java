@@ -10,12 +10,9 @@ public class WhitespaceProcessorTest {
 
 	TextProcessor textProcessor = new WhitespaceProcessor();
 
-	@Test
+	@Test( groups = "WhitespaceProcessor")
 	public void processText() {
-		String text = "Hello! I am    Paradox.  ";
-		String expected = "Hello! I am Paradox.";
-		
-		String actual = this.textProcessor.processText(text);
-		Assert.assertEquals(actual, expected);
+		String actual = this.textProcessor.processText(TestValueStore.whitespaceProcessorTestText);
+		Assert.assertEquals(actual, TestValueStore.Expected.whitespaceProcessorTestText);
 	}
 }
