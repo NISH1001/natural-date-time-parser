@@ -15,6 +15,6 @@ public class WhitespaceTokenizerTest {
 	@Test( dependsOnGroups = { "WhitespaceProcessor"})
 	public void tokenize() {
 		List<String> actual = this.whitespaceTokenizer.tokenize(TestValueStore.text);
-		Assert.assertEquals(actual, TestValueStore.Expected.words);
+		Assert.assertEquals(actual, TestValueStore.Expected.whitespaceTokenizerTokens);
 	}
 }

@@ -2,12 +2,9 @@ package com.codingparadox;
 
 import java.util.List;
 
-import com.codingparadox.core.textprocessor.TextProcessor;
-import com.codingparadox.core.textprocessor.WhitespaceProcessor;
-import com.codingparadox.core.tokenizer.SentenceTokenizer;
 import com.codingparadox.core.tokenizer.SimpleDateTokenizer;
 import com.codingparadox.core.tokenizer.Tokenizer;
-import com.codingparadox.core.tokenizer.WhitespaceTokenizer;
+import com.codingparadox.core.tokenizer.WordTokenizer;
 
 public class Main {
 	public static void main(String[] args) {
@@ -15,10 +12,8 @@ public class Main {
 				+ "I am Gru. "
 				+ "I speak in silence.";
 		
-		TextProcessor whitespaceProcessor = new WhitespaceProcessor();
-
-		Tokenizer tokenizer = new SentenceTokenizer();
-		List<String> tokens = tokenizer.tokenize(whitespaceProcessor.processText(text));
+		Tokenizer tokenizer = new WordTokenizer();
+		List<String> tokens = tokenizer.tokenize(text);
 		for(String token : tokens) {
 			System.out.println(token);
 		}

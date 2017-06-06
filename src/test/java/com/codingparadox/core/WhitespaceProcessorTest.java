@@ -12,7 +12,7 @@ public class WhitespaceProcessorTest {
 
 	@Test( groups = "WhitespaceProcessor")
 	public void processText() {
-		String actual = this.textProcessor.processText(TestValueStore.whitespaceProcessorTestText);
+		String actual = this.textProcessor.processText(TestValueStore.text);
 		Assert.assertEquals(actual, TestValueStore.Expected.whitespaceProcessorTestText);
 	}
 }

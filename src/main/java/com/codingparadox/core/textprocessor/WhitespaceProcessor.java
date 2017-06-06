@@ -6,7 +6,7 @@ package com.codingparadox.core.textprocessor;
  * 		trimming, reduction of multiple spaces, etc.
  *
  */
-public class WhitespaceProcessor implements TextProcessor{
+public class WhitespaceProcessor implements TextProcessor {
 
 	public String processText(String text) {
 		return text.trim().replaceAll("\\s+", " ");
