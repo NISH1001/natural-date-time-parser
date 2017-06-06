@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 
+import com.codingparadox.core.datetime.DateTimeEngine;
 import com.codingparadox.core.parser.NaturalDateParser;
 import com.codingparadox.core.tokenizer.SimpleDateTokenizer;
 import com.codingparadox.core.tokenizer.Tokenizer;
@@ -11,10 +12,10 @@ import com.codingparadox.core.tokenizer.WordTokenizer;
 
 public class Main {
 	public static void main(String[] args) {
-/*		testTokenizer();
-		testRegexTokezner();
+////		testTokenizer();
+//		testRegexTokezner();
 		testDate();
-*/		testNaturalDateParser();
+		testNaturalDateParser();
 	}
 	
 	public static void testTokenizer() {
@@ -39,8 +40,10 @@ public class Main {
 	}
 	
 	public static void testDate() {
-		DateTime dt = new DateTime();
-		System.out.println(dt.dayOfWeek().getAsText());
+		DateTimeEngine dateTimeEngine = new DateTimeEngine();
+		System.out.println(dateTimeEngine.getCurrentDateTime().year().get());
+		System.out.println(dateTimeEngine.getDateTime(1994, 7, 29, 0, 0, 0).dayOfWeek().getAsText());
+		System.out.println(dateTimeEngine.getYearsBefore(3));
 	}
 	
 	public static void testNaturalDateParser() {
