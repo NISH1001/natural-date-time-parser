@@ -60,6 +60,7 @@ public class Main {
 		List<String> tokens = tokenizer.tokenize(text.toLowerCase());
 		Ngram ngram = new Ngram(2);
 		ngram.updateNgram(tokens);
+		System.out.println(ngram.getNgramCount("i", "am"));
 		System.out.println(ngram.toString());
 	}
 }

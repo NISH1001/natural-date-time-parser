@@ -1,9 +1,10 @@
 package com.codingparadox.core.languagemodel;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.codingparadox.core.tokenizer.Tokenizer;
 import com.codingparadox.core.tokenizer.WordTokenizer;
@@ -42,20 +43,20 @@ public class Ngram {
 	 * 		List of tokens. Tokens can be anything
 	 */
 	public void createNgram(List<String> tokens) {
+		this.updateNgram(tokens);
 	}
 
 	/**
-	 * Updates the ngram data
+	 * Updates the ngram data from the list of token.
 	 * 
 	 * @param tokens
+	 * 		The list of String/word/token used for updating the Ngram
 	 */
 	public void updateNgram(List<String> tokens) {
 		int n = this.ngramType.getValue();
 		int tokensLength = tokens.size();
 		for(int i=0; i<tokensLength-n+1; ++i) {
-//			String ngramString = concat(tokens, i, i+n);
-//			List<String> words = this.wordTokenizer.tokenize(ngramString.toLowerCase());
-			List<String> words = concatIntoList(tokens, i, i+n);
+			List<String> words = NgramUtils.generateNgramSequence(tokens, i, i+n);
 			double ngramCount = 0;
 			if(this.data.containsKey(words)) {
 				ngramCount = this.data.get(words);
@@ -66,46 +67,85 @@ public class Ngram {
 			this.data.put(words, ++ngramCount);
 		}
 	}
-
+	
 	/**
-	 * It concatenates the list of string into ngram
+	 * Returns the ngram count for the particular sequence of token(string)
 	 * 
-	 * @param words
-	 * 		List of words
-	 * @param start
-	 * 		Start index for first word in the ngram
-	 * @param end
-	 * 		End index for end word in the ngram
+	 * @param ngram
+	 * 		List of string/word/token whose count is to be returned
+	 * @param ngramType
+	 * 		Ngram type
 	 * @return
-	 * 		Ngram words concatenated into String
+	 * 		Count of the ngram
 	 */
-	public static String concat(List<String> tokens, int start, int end) {
-		StringBuilder sb = new StringBuilder();
-		for (int i = start; i < end; i++)
-			sb.append((i > start ? " " : "") + tokens.get(i));
-		return sb.toString();
+	public double getNgramCount(List<String> ngramSequence) {
+		if(this.data.containsKey(ngramSequence)) {
+			return this.data.get(ngramSequence);
+		}
+		
+		return 0.0;
 	}
 	
 	/**
-	 * Create list of constituent words for the single ngram
-	 * Eg:
-	 *  	["I", "am", "fine"]
+	 * Returns the count of given sequence of words/tokens/strings
 	 * 
-	 * @param tokens
-	 * @param start
-	 * @param end
+	 * @param strings
+	 * 		Sequence of words/tokens/strings
 	 * @return
+	 * 		The ngram count of the sequence
 	 */
-	public static List<String> concatIntoList(List<String> tokens, int start, int end) {
-		List<String> ngram = new ArrayList<String>();
-		for(int i = start; i < end; ++i) {
-			ngram.add(tokens.get(i));
+	public double getNgramCount(String ... strings ) {
+		List<String> ngramSequence = Arrays.asList(strings);
+		return this.getNgramCount(ngramSequence);
+	}
+
+	
+	/**
+	 * Returns the total number of unique tokens (sequence of words) in the ngram model.
+	 * 
+	 * @param ngramType
+	 * 		Ngram type
+	 * @return
+	 * 		size of the vocabulary
+	 */
+	public int getVocabularySize() {
+		return this.data.size();
+	}
+	
+	/**
+	 * It returns the unique tokens in the ngram.
+	 * That is, it returns all the ngram sequence in the given ngram model.
+	 * 
+	 * @param ngramType
+	 * 		Ngram Type
+	 * @return
+	 * 		unique tokens
+	 */
+	public Set<List<String>> getUniqueTokens() {
+		return this.data.keySet();
+	}
+	
+	/**
+	 * Returns the total number of ngram sequence in the ngram
+	 * 
+	 * @return
+	 * 		
+	 */
+	public double getTotalNumberOfTokens() {
+		double totalCount = 0;
+		for(double count : this.data.values()) {
+			totalCount += count;
 		}
-		return ngram;
+		return totalCount;
 	}
 	
 	@Override
 	public String toString() {
-		return this.data.toString();
+		String toReturn = this.ngramType.toString()
+				+ "\nData :: " + this.data.toString()
+				+ "\nVocabulary Size :: " + this.getVocabularySize()
+				+ "\nUnique Tokens :: " + this.getUniqueTokens()
+				+ "\nTotal Number of Tokens :: " + this.getTotalNumberOfTokens();
+		return toReturn;
 	}
 }
