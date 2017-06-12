@@ -2,9 +2,8 @@ package com.codingparadox;
 
 import java.util.List;
 
-import org.joda.time.DateTime;
-
 import com.codingparadox.core.datetime.DateTimeEngine;
+import com.codingparadox.core.languagemodel.Ngram;
 import com.codingparadox.core.parser.NaturalDateParser;
 import com.codingparadox.core.tokenizer.SimpleDateTokenizer;
 import com.codingparadox.core.tokenizer.Tokenizer;
@@ -16,6 +15,7 @@ public class Main {
 //		testRegexTokezner();
 		testDate();
 		testNaturalDateParser();
+		testNgram();
 	}
 	
 	public static void testTokenizer() {
@@ -49,5 +49,17 @@ public class Main {
 	public static void testNaturalDateParser() {
 		NaturalDateParser naturalDateParser = new NaturalDateParser();
 		naturalDateParser.runTest();
+	}
+	
+	public static void testNgram() {
+		String text = "Hello! I am Paradox. "
+				+ "I am Gru. "
+				+ "I speak in silence.";
+		
+		Tokenizer tokenizer = new WordTokenizer();
+		List<String> tokens = tokenizer.tokenize(text.toLowerCase());
+		Ngram ngram = new Ngram(2);
+		ngram.updateNgram(tokens);
+		System.out.println(ngram.toString());
 	}
 }
