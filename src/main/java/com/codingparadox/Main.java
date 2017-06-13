@@ -1,10 +1,15 @@
 package com.codingparadox;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.codingparadox.core.datetime.DateTimeEngine;
+import com.codingparadox.core.languagemodel.LanguageModel;
 import com.codingparadox.core.languagemodel.Ngram;
+import com.codingparadox.core.languagemodel.NgramLanguageModel;
+import com.codingparadox.core.languagemodel.NgramUtils;
 import com.codingparadox.core.parser.NaturalDateParser;
+import com.codingparadox.core.tokenizer.SentenceTokenizer;
 import com.codingparadox.core.tokenizer.SimpleDateTokenizer;
 import com.codingparadox.core.tokenizer.Tokenizer;
 import com.codingparadox.core.tokenizer.WordTokenizer;
@@ -15,7 +20,8 @@ public class Main {
 //		testRegexTokezner();
 		testDate();
 		testNaturalDateParser();
-		testNgram();
+//		testNgram();
+		testLanguageModel();
 	}
 	
 	public static void testTokenizer() {
@@ -62,5 +68,25 @@ public class Main {
 		ngram.updateNgram(tokens);
 		System.out.println(ngram.getNgramCount("i", "am"));
 		System.out.println(ngram.toString());
+	}
+	
+	public static void testLanguageModel() {
+		String text = "Hello! I am Paradox. "
+				+ "I am Gru. "
+				+ "I speak in silence.";
+		
+		Tokenizer sentenceTokenizer = new SentenceTokenizer();
+		Tokenizer wordTokenizer = new WordTokenizer();
+		List<String> sentences = sentenceTokenizer.tokenize(text.toLowerCase());
+
+		List<List<String>> tokens = new ArrayList<List<String>>();
+		for(String sentence : sentences) {
+			tokens.add(wordTokenizer.tokenize(sentence));
+		}
+
+		LanguageModel languageModel = new NgramLanguageModel();
+		languageModel.updateModel(tokens);
+		
+		System.out.println(languageModel.toString());
 	}
 }

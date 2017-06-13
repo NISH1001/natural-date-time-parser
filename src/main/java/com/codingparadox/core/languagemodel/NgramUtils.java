@@ -3,6 +3,9 @@ package com.codingparadox.core.languagemodel;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.codingparadox.core.tokenizer.Tokenizer;
+import com.codingparadox.core.tokenizer.WordTokenizer;
+
 public class NgramUtils {
 	
 	/**
@@ -48,8 +51,9 @@ public class NgramUtils {
 	 */
 	public static String concat(List<String> tokens, int start, int end) {
 		StringBuilder sb = new StringBuilder();
-		for (int i = start; i < end; i++)
-			sb.append((i > start ? " " : "") + tokens.get(i));
+		sb.append(tokens.get(start));
+		for (int i = start + 1; i <= end; i++)
+			sb.append(" " + tokens.get(i));
 		return sb.toString();
 	}
 	
@@ -60,9 +64,12 @@ public class NgramUtils {
 	 * @return
 	 */
 	public static List<List<String>> generateNgrams(List<String> tokens, int n) {
+		Tokenizer tokenizer = new WordTokenizer();
 		List<List<String>> ngrams = new ArrayList<List<String>>();
 		for(int i=0; i<tokens.size() - n + 1; ++i) {
-			ngrams.add(generateNgramSequence(tokens, i, i + n -1));
+			String ngramString = concat(tokens, i, i+n-1);
+//			ngrams.add(generateNgramSequence(tokens, i, i + n -1));
+			ngrams.add(tokenizer.tokenize(ngramString));
 		}
 		return ngrams;
 	}

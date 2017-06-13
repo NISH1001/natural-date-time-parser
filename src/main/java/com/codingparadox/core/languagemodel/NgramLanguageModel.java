@@ -21,6 +21,10 @@ public class NgramLanguageModel implements LanguageModel{
 	
 	public NgramLanguageModel() {
 		this.data = new EnumMap<NgramType, Ngram>(NgramType.class);
+		
+		for(NgramType ngramType : NgramType.values()) {
+			this.data.put(ngramType, new Ngram(ngramType));
+		}
 	}
 	
 	public void addNgram(Ngram ngram, NgramType ngramType) {
@@ -32,8 +36,26 @@ public class NgramLanguageModel implements LanguageModel{
 	}
 
 	public void updateModel(List<List<String>> tokens) {
-		// TODO Auto-generated method stub
-		
+		// loop over each sentence
+		for(List<String> sentence : tokens) {
+			
+			// skip sentences shorter than 3 words
+			if(sentence.size() < NgramType.TRIGRAM.getValue()) {
+				System.out.println("Skipping ngram generation for sentence : " + sentence);
+				continue;
+			}
+			
+			System.out.println(sentence);
+			
+			// generate ngrams for every type
+			for(NgramType ngramType : NgramType.values()) {
+				List<List<String>> ngrams = NgramUtils.generateNgrams(sentence, ngramType.getValue());
+				// update the Ngram model accordingly
+				for(List<String> ngram : ngrams) {
+					this.data.get(ngramType).updateNgram(ngram);
+				}
+			}
+		}
 	}
 
 	public double getNgramCount(List<String> ngramSequence, NgramType ngramType) {
@@ -50,6 +72,16 @@ public class NgramLanguageModel implements LanguageModel{
 
 	public double getTotalNumberofTokens(NgramType ngramType) {
 		return this.data.get(ngramType).getTotalNumberOfTokens();
+	}
+	
+	@Override
+	public String toString() {
+		String toReturn = "";
+		for(NgramType ngramType : NgramType.values()) {
+			toReturn += "\n" + this.data.get(ngramType).toString();
+		}
+		
+		return toReturn;
 	}
 
 }
