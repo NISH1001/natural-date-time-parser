@@ -19,12 +19,16 @@ public class NgramLanguageModel implements LanguageModel{
 	 */
 	private Map<NgramType, Ngram> data;
 	
+	private int sizeOfTrainingSet;
+	
 	public NgramLanguageModel() {
 		this.data = new EnumMap<NgramType, Ngram>(NgramType.class);
 		
 		for(NgramType ngramType : NgramType.values()) {
 			this.data.put(ngramType, new Ngram(ngramType));
 		}
+		
+		this.setSizeOfTrainingSet(0);
 	}
 	
 	public void addNgram(Ngram ngram, NgramType ngramType) {
@@ -36,6 +40,7 @@ public class NgramLanguageModel implements LanguageModel{
 	}
 
 	public void updateModel(List<List<String>> tokens) {
+		this.setSizeOfTrainingSet(this.getSizeOfTrainingSet() + 1);
 		// loop over each sentence
 		for(List<String> sentence : tokens) {
 			
@@ -58,8 +63,12 @@ public class NgramLanguageModel implements LanguageModel{
 		}
 	}
 
-	public double getNgramCount(List<String> ngramSequence, NgramType ngramType) {
+	public double getNgramCount( NgramType ngramType, List<String> ngramSequence) {
 		return this.data.get(ngramType).getNgramCount(ngramSequence);
+	}
+	
+	public double getNgramCount(NgramType ngramType, String ... ngram) {
+		return this.data.get(ngramType).getNgramCount(ngram);
 	}
 
 	public int getVocabularySize(NgramType ngramType) {
@@ -81,7 +90,17 @@ public class NgramLanguageModel implements LanguageModel{
 			toReturn += "\n" + this.data.get(ngramType).toString();
 		}
 		
+		toReturn +="\nTraining set size :: " + this.getSizeOfTrainingSet();
+		
 		return toReturn;
+	}
+
+	public int getSizeOfTrainingSet() {
+		return sizeOfTrainingSet;
+	}
+
+	public void setSizeOfTrainingSet(int sizeOfTrainingSet) {
+		this.sizeOfTrainingSet = sizeOfTrainingSet;
 	}
 
 }

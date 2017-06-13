@@ -23,7 +23,19 @@ public interface LanguageModel {
 	 * @return
 	 * 		Count of the ngram
 	 */
-	public double getNgramCount(List<String> ngram, NgramType ngramType);
+	public double getNgramCount(NgramType ngramType, List<String> ngramSequence);
+	
+	/**
+	 * Returns the ngram count for given ngram sequence of strings
+	 * 
+	 * @param ngramType
+	 * 		Type of ngram model
+	 * @param ngramSequence
+	 * 		Sequence of words/string whose count is to be returned
+	 * @return
+	 * 		Count of the ngram sequence
+	 */
+	public double getNgramCount(NgramType ngramType, String ... ngramSequence);
 	
 	/**
 	 * Returns the total number of unique tokens (sequence of words) in the ngram model.
